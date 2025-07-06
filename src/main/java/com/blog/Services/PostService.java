@@ -1,17 +1,17 @@
 package com.blog.Services;
 
+import com.blog.Dto.CategoryDto.CategoryResponseDto;
+import com.blog.Dto.CommentDto.CommentResponseDto;
 import com.blog.Dto.PostDto.PostRequestDto;
 import com.blog.Dto.PostDto.PostResponseDto;
-import com.blog.Entities.Category;
-import com.blog.Entities.Posts;
-import com.blog.Entities.Tag;
-import com.blog.Entities.Users;
+import com.blog.Dto.TagDto.TagResponseDto;
+import com.blog.Entities.*;
 import com.blog.Enums.Status;
+import com.blog.Mappers.CategoryMapper;
+import com.blog.Mappers.CommentMapper;
 import com.blog.Mappers.PostMapper;
-import com.blog.Repositories.CategoryRepository;
-import com.blog.Repositories.PostRepository;
-import com.blog.Repositories.TagRepository;
-import com.blog.Repositories.UserRepository;
+import com.blog.Mappers.TagMapper;
+import com.blog.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +29,24 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final CategoryMapper categoryMapper;
+    private final TagMapper tagMapper;
+
 
     @Autowired
     public PostService(UserRepository userRepository,
                        TagRepository tagRepository,
                        CategoryRepository categoryRepository,
                        PostRepository postRepository,
-                       PostMapper postMapper) {
+                       PostMapper postMapper,
+                       CommentRepository commentRepository, CommentMapper commentMapper, CategoryMapper categoryMapper, TagMapper tagMapper) {
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
         this.postRepository = postRepository;
         this.postMapper = postMapper;
+        this.categoryMapper = categoryMapper;
+        this.tagMapper = tagMapper;
     }
 
 
@@ -124,5 +130,28 @@ public class PostService {
         post.setUpdatedBy("system");
         postRepository.save(post);
     }
+
+    public List<CategoryResponseDto> getCategoriesByPostId(Long postId) {
+        Posts post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        return post.getCategories()
+                .stream()
+                .map(categoryMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TagResponseDto> getTagsByPostId(Long postId) {
+        Posts post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        return post.getTags()
+                .stream()
+                .map(tagMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
 
 }

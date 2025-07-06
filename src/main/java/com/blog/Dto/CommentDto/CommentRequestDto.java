@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CommentRequestDto {
     private String content;
     private Long postId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Long userId;
+
 }
 

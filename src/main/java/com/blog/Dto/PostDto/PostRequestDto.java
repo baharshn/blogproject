@@ -14,5 +14,5 @@ public class PostRequestDto {
     private String content;
     private Long authorId;
     private Set<Long> categoryIds;
-    private Set<Integer> tagIds;
+    private Set<Long> tagIds;
 }

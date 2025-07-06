@@ -4,12 +4,16 @@ import com.blog.Dto.UserDto.UserRequestDto;
 import com.blog.Dto.UserDto.UserResponseDto;
 import com.blog.Entities.Role;
 import com.blog.Entities.Users;
+import com.blog.Enums.Status;
 import com.blog.Mappers.UserMapper;
 import com.blog.Repositories.RoleRepository;
 import com.blog.Repositories.UserRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -77,6 +81,19 @@ public class UserService {
         return userMapper.toDto(updatedUser);
 
 
+    }
+
+    public List<UserResponseDto> getAllActiveUsers() {//buraya parametre gelmesi gerekebilir?
+        return userRepository.findByStatus(Status.ACTIVE)
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public UserResponseDto getUserById(Long id ) {
+        Users user= userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+        return userMapper.toDto(user);
     }
 
     public void deleteUser(Long id) {

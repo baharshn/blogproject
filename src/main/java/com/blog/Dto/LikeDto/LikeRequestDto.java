@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 
-//kullanıcı like atarken sadece postid göndermeli user ın kim olduğunu güvenli oturumdan alır
+//kullanıcı like atarken sadece postid göndermeli user ın kim olduğunu güvenli oturumdan alınmalıdır
 public class LikeRequestDto {
     private Long postId;
+    private Long userId;
 }
 

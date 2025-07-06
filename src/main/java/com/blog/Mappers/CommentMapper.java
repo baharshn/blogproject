@@ -31,8 +31,6 @@ public class CommentMapper {
         }
         Comments comment = new Comments();
         comment.setContent(commentRequestDto.getContent());
-        comment.setCreatedAt(commentRequestDto.getCreatedAt());
-        comment.setUpdatedAt(commentRequestDto.getUpdatedAt());
         comment.setUser(user);
         comment.setPost(post);
 
