@@ -2,7 +2,10 @@ package com.blog.Controller;
 
 import com.blog.Dto.AuthDto.AuthRequestDto;
 import com.blog.Dto.AuthDto.AuthResponseDto;
+import com.blog.Dto.UserDto.UserRequestDto;
+import com.blog.Dto.UserDto.UserResponseDto;
 import com.blog.Security.JwtUtils;
+import com.blog.Services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +20,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final UserService userService;
 
     /**
      * Login endpointi
@@ -40,4 +44,10 @@ public class AuthController {
         // 4️⃣ Response dön
         return new AuthResponseDto(token);
     }
+
+    @PostMapping("/register")
+    public UserResponseDto registerUser(@RequestBody UserRequestDto userDto) {
+        return userService.createUser(userDto);
+    }
+
 }

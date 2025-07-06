@@ -41,7 +41,7 @@ public class UserService {
         newUser.setCreatedBy("System");
 
         //şifre hashleme
-        //newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
         Users savedUser = userRepository.save(newUser);
         return userMapper.toDto(savedUser);
