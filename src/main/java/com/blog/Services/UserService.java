@@ -5,6 +5,7 @@ import com.blog.Dto.UserDto.UserResponseDto;
 import com.blog.Entities.Role;
 import com.blog.Entities.Users;
 import com.blog.Enums.Status;
+import com.blog.Exception.ResourceNotFoundException;
 import com.blog.Mappers.UserMapper;
 import com.blog.Repositories.RoleRepository;
 import com.blog.Repositories.UserRepository;
@@ -50,7 +51,7 @@ public class UserService {
 
     public UserResponseDto updateUser(UserRequestDto userRequestDto,Long id) {
         Users user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
         if(userRequestDto.getUsername() != null){
             user.setUsername(userRequestDto.getUsername());

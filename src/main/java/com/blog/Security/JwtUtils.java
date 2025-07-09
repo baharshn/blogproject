@@ -1,17 +1,26 @@
 package com.blog.Security;
+
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-    @Value("${blog.app.jwtSecret:SecretKeyJwt}")
+    @Value("${blog.app.jwtSecret:MySuperSecretKeyThatIsDefinitelyLongEnoughToBeAtLeastSixtyFourCharactersLong1234}")
     private String jwtSecret;
 
     @Value("${blog.app.jwtExpirationMs:86400000}")
     private int jwtExpirationMs;
+
+    private Key getSigningKey() {
+        // secret en az 32 bayt olmalı
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
 
     //  TOKEN ÜRET
     public String generateToken(String username) {
@@ -19,14 +28,15 @@ public class JwtUtils {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
     //  TOKEN'DAN USERNAME AL
     public String getUsernameFromJwt(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -35,10 +45,11 @@ public class JwtUtils {
     //  TOKEN DOĞRULA
     public boolean validateJwt(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
 }
+

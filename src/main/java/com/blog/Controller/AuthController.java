@@ -35,13 +35,13 @@ public class AuthController {
                 )
         );
 
-        // 2️⃣ UserDetails al
+        //  UserDetails al
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        // 3️⃣ Token üret
+        // Token üret
         String token = jwtUtils.generateToken(userDetails.getUsername());
 
-        // 4️⃣ Response dön
+        //  Response dön
         return new AuthResponseDto(token);
     }
 
