@@ -1,11 +1,16 @@
 import React from 'react';
-import HomePage from './pages/HomePage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import BlogHomePage from "./Pages/BlogHomePage.jsx";
+import PostDetail from "./Pages/PostDetail.jsx"
 
 function App() {
     return (
-        <div>
-            <HomePage />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<BlogHomePage />} />
+                <Route path="/posts/:id" element={<PostDetail />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 
