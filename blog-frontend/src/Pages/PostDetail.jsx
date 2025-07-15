@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Heart, MessageCircle, Share2, Calendar, User, Tag, Folder, ArrowLeft } from 'lucide-react';
+import { Search, X, Mail, Lock, Eye, EyeOff,  ArrowRight, Facebook, Twitter, Instagram, Youtube,UserPlus } from 'lucide-react';
 import '../Styles/PostDetail.css';
 
+
 const PostDetail = () => {
+
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(142);
     const [comments, setComments] = useState([
@@ -56,6 +59,7 @@ const PostDetail = () => {
                 <div className="header-content">
                     <div className="header-nav">
                         <div className="nav-left">
+
                             <button className="back-button">
                                 <ArrowLeft size={20} />
                                 <span>Back to Blog</span>

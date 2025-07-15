@@ -1,7 +1,12 @@
 /* Container */
 .container {
+
+    max-width: 100%;
     min-height: 100vh;
+    margin: 0 auto;
+    padding: 0 16px;
     background: linear-gradient(135deg, #fef7ed 0%, #fed7aa 100%);
+    box-sizing: border-box;
 }
 
 /* Header */
@@ -71,7 +76,7 @@
 
 /* Main Content */
 .main-content {
-    max-width: 896px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 2rem 1rem;
 }

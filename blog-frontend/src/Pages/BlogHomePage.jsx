@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 
 const BlogHomepage = () => {
+    console.log("Rendering BlogHomepage!");
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -17,9 +18,14 @@ const BlogHomepage = () => {
     //postları backendden çekiyor ama image kısmı düşünülmeli?
     useEffect(() => {
         axios.get('http://localhost:8080/api/posts')
-            .then(res => setBlogPosts(res.data))
+            .then(res => {
+                console.log("API response:", res.data);
+                setBlogPosts(res.data);
+            })
             .catch(err => console.error('Error fetching posts:', err));
     }, []);
+
+
 
 
     //mock data
@@ -72,6 +78,8 @@ const BlogHomepage = () => {
     ];
 
      */
+
+
 
 
 
@@ -410,7 +418,10 @@ const BlogHomepage = () => {
     }
 
     return (
+        <>
+            {console.log("RENDER blogPosts:", blogPosts)}
         <div className="blog-homepage">
+
             {/* Header */}
             <header className="header">
                 <div className="container">
@@ -448,6 +459,8 @@ const BlogHomepage = () => {
                     </div>
                 </div>
             </header>
+
+
 
             {/* Hero Section */}
             <section className="hero">
@@ -515,15 +528,14 @@ const BlogHomepage = () => {
                 </div>
             </section>
 
-            {/* Blog Posts Grid */}
 
+            {/* Blog Posts Grid */}
             <section className="blog-posts">
                 <div className="container">
                     <h3 className="section-title">Latest Stories</h3>
                     <div className="posts-grid">
                         {blogPosts.map((post) => (
                             <article key={post.id} className="post-card">
-                                <Link to={`/posts/${post.id}`}>
                                 <img
                                     src={post.image}
                                     alt={post.title}
@@ -532,7 +544,7 @@ const BlogHomepage = () => {
                                 <div className="post-content">
                                     <div className="post-meta">
                                         <div className="post-categories">
-                                            {post.categoryNames && post.categoryNames.map((cat,i) => (
+                                            {post.categoryNames && post.categoryNames.map((cat, i) => (
                                                 <span key={i} className="category">{cat}</span>
                                             ))}
                                         </div>
@@ -542,17 +554,20 @@ const BlogHomepage = () => {
                                     <p className="post-excerpt">{post.content}</p>
                                     <div className="post-footer">
                                         <span className="post-date">{post.createdAt}</span>
-                                        <button className="read-more">
+                                        <Link to={`/posts/${post.id}`} className="read-more">
                                             Read More
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
-                                </Link>
                             </article>
                         ))}
                     </div>
                 </div>
             </section>
+
+
+
+
 
 
             {/* Newsletter Section */}
@@ -633,7 +648,9 @@ const BlogHomepage = () => {
             {showLogin && <LoginModal />}
             {showRegister && <RegisterModal />}
         </div>
+        </>
     );
+
 };
 
 export default BlogHomepage;
